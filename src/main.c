@@ -23,75 +23,52 @@ int main(int argc, const char* argv[]) {
     reg[R_PC] = PC_START;
 
     int running = 1;
-    while (running)
-    {
-        /* FETCH */
+    while (running) {
         uint16_t instr = mem_read(reg[R_PC]++);
         uint16_t op = instr >> 12;
 
-        switch (op)
-        {
+        switch (op) {
             case OP_ADD:
-                {
-                    /* destination register (DR) */
-                    uint16_t r0 = (instr >> 9) & 0x7;
-                    /* first operand (SR1) */
-                    uint16_t r1 = (instr >> 6) & 0x7;
-                    /* whether we are in immediate mode */
-                    uint16_t imm_flag = (instr >> 5) & 0x1;
-
-                    if (imm_flag)
-                    {
-                        uint16_t imm5 = sign_extend(instr & 0x1F, 5);
-                        reg[r0] = reg[r1] + imm5;
-                    }
-                    else
-                    {
-                        uint16_t r2 = instr & 0x7;
-                        reg[r0] = reg[r1] + reg[r2];
-                    }
-
-                    update_flags(r0);
-                }
+                do_ADD(instr, op);
                 break;
             case OP_AND:
-                @{AND}
+                do_AND(instr, op);
                 break;
             case OP_NOT:
-                @{NOT}
+                do_NOT(instr, op);
                 break;
             case OP_BR:
-                @{BR}
+                do_BR(instr, op);
                 break;
             case OP_JMP:
-                @{JMP}
+                do_JMP(instr, op);
                 break;
             case OP_JSR:
-                @{JSR}
+                do_JSR(instr, op);
                 break;
             case OP_LD:
-                @{LD}
+                do_LD(instr, op);
                 break;
             case OP_LDI:
-                @{LDI}
+                do_LDI(instr, op);
                 break;
             case OP_LDR:
-                @{LDR}
+                do_LDR(instr, op);
                 break;
             case OP_LEA:
-                @{LEA}
+                do_LEA(instr, op);
                 break;
             case OP_ST:
-                @{ST}
+                do_ST(instr, op);
                 break;
             case OP_STI:
-                @{STI}
+                do_STI(instr, op);
                 break;
             case OP_STR:
-                @{STR}
+                do_STR(instr, op);
                 break;
             case OP_TRAP:
-                @{TRAP}
+                do_TRAP(instr, op);
                 break;
             case OP_RES:
             case OP_RTI:
