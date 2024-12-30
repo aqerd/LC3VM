@@ -20,7 +20,7 @@ void load_arguments(int argc, const char* argv[]) {
 int main(int argc, const char* argv[]) {
     load_arguments(argc, argv);
     
-    signal(SIGINT, handle_interrupt(1));
+    signal(SIGINT, handle_interrupt);
     disable_input_buffering();
 
     enum { PC_START = 0x3000 };
