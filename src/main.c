@@ -72,8 +72,11 @@ int main(int argc, const char* argv[]) {
             case OP_STR:
                 do_STR(instr, op);
                 break;
+            case OP_RET:
+                do_RET(instr, op);
+                break;
             case OP_TRAP:
-                do_TRAP(instr, op);
+                do_TRAP(instr, op, running);
                 break;
             case OP_RES:
             case OP_RTI:
