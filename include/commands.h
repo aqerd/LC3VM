@@ -16,6 +16,7 @@ void do_LEA(uint16_t instr, uint16_t reg[]);
 void do_ST(uint16_t instr, uint16_t reg[]);
 void do_STI(uint16_t instr, uint16_t reg[]);
 void do_STR(uint16_t instr, uint16_t reg[]);
-void do_TRAP(uint16_t instr, uint16_t reg[]);
+void do_RET(uint16_t instr, uint16_t reg[]);
+void do_TRAP(uint16_t instr, uint16_t reg[], int running);
 
 #endif
