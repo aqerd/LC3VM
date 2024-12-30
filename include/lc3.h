@@ -1,13 +1,7 @@
-#include <stdint.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/time.h>
-#include <sys/types.h>
-
 #ifndef LC3
 #define LC3
+
+#include <stdint.h>
 
 uint16_t reg[R_COUNT];
 
@@ -32,22 +26,22 @@ enum {
 };
 
 enum {
-    OP_BR = 0, /* branch */
-    OP_ADD,    /* add  */
-    OP_AND,    /* bitwise and */
-    OP_JMP,    /* jump */
-    OP_JSR,    /* jump register */
-    OP_LD,     /* load */
-    OP_LDI,    /* load indirect */
-    OP_LDR,    /* load register */
-    OP_LEA,    /* load effective address */
-    OP_NOT,    /* bitwise not */
-    OP_ST,     /* store */
-    OP_STI,    /* store indirect */
-    OP_STR,    /* store register */
-    OP_RTI,    /* unused */
-    OP_TRAP,   /* execute trap */
-    OP_RES     /* reserved (unused) */
+    OP_BR = 0,  /* branch */
+    OP_ADD,     /* add  */
+    OP_AND,     /* bitwise and */
+    OP_JMP,     /* jump */
+    OP_JSR,     /* jump register */
+    OP_LD,      /* load */
+    OP_LDI,     /* load indirect */
+    OP_LDR,     /* load register */
+    OP_LEA,     /* load effective address */
+    OP_NOT,     /* bitwise not */
+    OP_ST,      /* store */
+    OP_STI,     /* store indirect */
+    OP_STR,     /* store register */
+    OP_RTI,     /* unused */
+    OP_TRAP,    /* execute trap */
+    OP_RES      /* reserved (unused) */
 };
 
 #endif

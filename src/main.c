@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <signal.h>
 #include "lc3.h"
+#include "utils.h"
 
-int main(int argc, const char* argv[]) {
+void load_arguments(int argc, const char* argv[]) {
     if (argc < 2) {
         printf("lc3 [image-file1] ...\n");
         exit(2);
@@ -13,13 +15,16 @@ int main(int argc, const char* argv[]) {
             exit(1);
         }
     }
+}
+
+int main(int argc, const char* argv[]) {
+    load_arguments(argc, argv);
     
-    signal(SIGINT, handle_interrupt);
+    signal(SIGINT, handle_interrupt(1));
     disable_input_buffering();
 
-    reg[R_COND] = FL_ZRO;
-
     enum { PC_START = 0x3000 };
+    reg[R_COND] = FL_ZRO;
     reg[R_PC] = PC_START;
 
     int running = 1;

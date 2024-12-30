@@ -1,10 +1,4 @@
 #include <stdint.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/time.h>
-#include <sys/types.h>
 
 void do_ADD(uint16_t instr, uint16_t reg[]) {
     uint16_t r0 = (instr >> 9) & 0x7; /* DR */
@@ -23,3 +17,4 @@ void do_ADD(uint16_t instr, uint16_t reg[]) {
     }
     update_flags(r0);
 }
+
