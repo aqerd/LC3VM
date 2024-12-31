@@ -1,5 +1,5 @@
-#ifndef MEMORY
-#define MEMORY
+#ifndef LITTLE_COMPUTER_MEMORY
+#define LITTLE_COMPUTER_MEMORY
 
 #include <stdint.h>
 

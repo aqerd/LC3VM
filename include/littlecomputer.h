@@ -1,13 +1,12 @@
-#ifndef LC3
-#define LC3
+#ifndef LITTLE_COMPUTER_3
+#define LITTLE_COMPUTER_3
 
 #include <stdint.h>
-#include "trap.h"
+#include <stdlib.h>
+#include "traproutines.h"
 
 #define MEMORY_MAX (1 << 16)
-uint16_t memory[MEMORY_MAX];
-
-uint16_t reg[R_COUNT];
+extern uint16_t memory[MEMORY_MAX];
 
 /* Registers */
 enum {
@@ -23,6 +22,8 @@ enum {
     R_COND,
     R_COUNT
 };
+
+extern uint16_t reg[R_COUNT];
 
 /* Flags */
 enum {

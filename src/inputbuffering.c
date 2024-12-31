@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <signal.h>
-/* windows only */
 #include <Windows.h>
-#include <conio.h>  // _kbhit
+#include <conio.h>
+#include "inputbuffering.h"
+#include "littlecomputer.h"
+
+/* Supported only in Windows */
 
 HANDLE hStdin = INVALID_HANDLE_VALUE;
 DWORD fdwMode, fdwOldMode;

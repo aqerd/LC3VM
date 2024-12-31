@@ -1,6 +1,8 @@
+#include <stdio.h>
 #include <stdint.h>
-#include "lc3.h"
-#include "memory.h"
+#include "littlecomputer.h"
+#include "lcmemory.h"
+#include "inputbuffering.h"
 
 void mem_write(uint16_t address, uint16_t val)
 {

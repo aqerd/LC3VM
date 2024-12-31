@@ -1,5 +1,7 @@
-#ifndef INPUT_BUFFERING_UNIX
-#define INPUT_BUFFERING_UNIX
+#ifndef INPUT_BUFFERING_WINDOWS
+#define INPUT_BUFFERING_WINDOWS
+
+/* Supported only in Windows */
 
 #include <stdint.h>
 

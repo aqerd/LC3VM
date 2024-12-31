@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "lc3.h"
+#include "littlecomputer.h"
+#include "traproutines.h"
+#include "utils.h"
 
-void trap_put(uint16_t reg[]) {
+void trap_puts(uint16_t reg[]) {
     /* one char per word */
     uint16_t* c = memory + reg[R_R0];
     while (*c) {
@@ -32,7 +34,7 @@ void trap_in(uint16_t reg[]) {
     update_flags(R_R0);
 }
 
-void trap_put(uint16_t reg[]) {
+void trap_putsp(uint16_t reg[]) {
     /* one char per byte (two bytes per word) here we need to swap back to big endian format */
     uint16_t* c = memory + reg[R_R0];
     while (*c)

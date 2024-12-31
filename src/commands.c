@@ -1,7 +1,14 @@
 #include <stdint.h>
-#include "lc3.h"
+#include "commands.h"
+#include "littlecomputer.h"
+#include "traproutines.h"
+#include "utils.h"
+#include "lcmemory.h"
 
-void do_ADD(uint16_t instr, uint16_t reg[]) {
+uint16_t reg[R_COUNT];
+uint16_t memory[MEMORY_MAX];
+
+void do_ADD(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7; /* DR */
     uint16_t r1 = (instr >> 6) & 0x7; /* SR1 */
     uint16_t imm_flag = (instr >> 5) & 0x1; /* are we in immediate mode? */
@@ -19,7 +26,7 @@ void do_ADD(uint16_t instr, uint16_t reg[]) {
     update_flags(r0);
 }
 
-void do_AND(uint16_t instr, uint16_t reg[]) {
+void do_AND(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t r1 = (instr >> 6) & 0x7;
     uint16_t imm_flag = (instr >> 5) & 0x1;
@@ -34,7 +41,7 @@ void do_AND(uint16_t instr, uint16_t reg[]) {
     update_flags(r0);
 }
 
-void do_BR(uint16_t instr, uint16_t reg[]) {
+void do_BR(uint16_t instr) {
     uint16_t pc_offset = sign_extend(instr & 0x1FF, 9);
     uint16_t cond_flag = (instr >> 9) & 0x7;
     if (cond_flag & reg[R_COND])
@@ -43,14 +50,14 @@ void do_BR(uint16_t instr, uint16_t reg[]) {
     }
 }
 
-void do_NOT(uint16_t instr, uint16_t reg[]) {
+void do_NOT(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t r1 = (instr >> 6) & 0x7;
     reg[r0] = ~reg[r1];
     update_flags(r0);
 }
 
-void do_LDI(uint16_t instr, uint16_t reg[]) {
+void do_LDI(uint16_t instr) {
     /* add PCoffset9 to the current PC, look at that memory location to get the final address */
     uint16_t r0 = (instr >> 9) & 0x7; /* DR */
     uint16_t pc_offset = sign_extend(instr & 0x1FF, 9); /* PCoffset9 */
@@ -58,18 +65,18 @@ void do_LDI(uint16_t instr, uint16_t reg[]) {
     update_flags(r0);
 }
 
-void do_JMP(uint16_t instr, uint16_t reg[]) {
+void do_JMP(uint16_t instr) {
     /* Also handles RET */
     uint16_t r1 = (instr >> 6) & 0x7;
     reg[R_PC] = reg[r1];
 }
 
-void do_RET(uint16_t instr, uint16_t reg[]) {
+void do_RET(uint16_t instr) {
     /* RET happens whenever R1 is 7, it's actually a special case of JMP */
-    do_JMP(instr, reg);
+    do_JMP(instr);
 }
 
-void do_JSR(uint16_t instr, uint16_t reg[]) {
+void do_JSR(uint16_t instr) {
     uint16_t long_flag = (instr >> 11) & 1;
     reg[R_R7] = reg[R_PC];
     if (long_flag)
@@ -84,14 +91,14 @@ void do_JSR(uint16_t instr, uint16_t reg[]) {
     }
 }
 
-void do_LD(uint16_t instr, uint16_t reg[]) {
+void do_LD(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t pc_offset = sign_extend(instr & 0x1FF, 9);
     reg[r0] = mem_read(reg[R_PC] + pc_offset);
     update_flags(r0);
 }
 
-void do_LDR(uint16_t instr, uint16_t reg[]) {
+void do_LDR(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t r1 = (instr >> 6) & 0x7;
     uint16_t offset = sign_extend(instr & 0x3F, 6);
@@ -99,33 +106,33 @@ void do_LDR(uint16_t instr, uint16_t reg[]) {
     update_flags(r0);
 }
 
-void do_LEA(uint16_t instr, uint16_t reg[]) {
+void do_LEA(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t pc_offset = sign_extend(instr & 0x1FF, 9);
     reg[r0] = reg[R_PC] + pc_offset;
     update_flags(r0);
 }
 
-void do_ST(uint16_t instr, uint16_t reg[]) {
+void do_ST(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t pc_offset = sign_extend(instr & 0x1FF, 9);
     mem_write(reg[R_PC] + pc_offset, reg[r0]);
 }
 
-void do_STR(uint16_t instr, uint16_t reg[]) {
+void do_STR(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t r1 = (instr >> 6) & 0x7;
     uint16_t offset = sign_extend(instr & 0x3F, 6);
     mem_write(reg[r1] + offset, reg[r0]);
 }
 
-void do_STI(uint16_t instr, uint16_t reg[]) {
+void do_STI(uint16_t instr) {
     uint16_t r0 = (instr >> 9) & 0x7;
     uint16_t pc_offset = sign_extend(instr & 0x1FF, 9);
     mem_write(mem_read(reg[R_PC] + pc_offset), reg[r0]);
 }
 
-void do_TRAP(uint16_t instr, uint16_t reg[], int running) {
+void do_TRAP(uint16_t instr, int running) {
     reg[R_R7] = reg[R_PC];
 
     switch (instr & 0xFF) {

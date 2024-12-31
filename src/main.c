@@ -1,21 +1,11 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <signal.h>
-#include "lc3.h"
+#include "littlecomputer.h"
+#include "commands.h"
 #include "utils.h"
-
-void load_arguments(int argc, const char* argv[]) {
-    if (argc < 2) {
-        printf("lc3 [image-file1] ...\n");
-        exit(2);
-    }
-
-    for (int j = 1; j < argc; ++j) {
-        if (!read_image(argv[j])) {
-            printf("failed to load image: %s\n", argv[j]);
-            exit(1);
-        }
-    }
-}
+#include "inputbuffering.h"
+#include "lcmemory.h"
 
 int main(int argc, const char* argv[]) {
     load_arguments(argc, argv);
@@ -34,49 +24,49 @@ int main(int argc, const char* argv[]) {
 
         switch (op) {
             case OP_ADD:
-                do_ADD(instr, op);
+                do_ADD(instr);
                 break;
             case OP_AND:
-                do_AND(instr, op);
+                do_AND(instr);
                 break;
             case OP_NOT:
-                do_NOT(instr, op);
+                do_NOT(instr);
                 break;
             case OP_BR:
-                do_BR(instr, op);
+                do_BR(instr);
                 break;
             case OP_JMP:
-                do_JMP(instr, op);
+                do_JMP(instr);
                 break;
             case OP_JSR:
-                do_JSR(instr, op);
+                do_JSR(instr);
                 break;
             case OP_LD:
-                do_LD(instr, op);
+                do_LD(instr);
                 break;
             case OP_LDI:
-                do_LDI(instr, op);
+                do_LDI(instr);
                 break;
             case OP_LDR:
-                do_LDR(instr, op);
+                do_LDR(instr);
                 break;
             case OP_LEA:
-                do_LEA(instr, op);
+                do_LEA(instr);
                 break;
             case OP_ST:
-                do_ST(instr, op);
+                do_ST(instr);
                 break;
             case OP_STI:
-                do_STI(instr, op);
+                do_STI(instr);
                 break;
             case OP_STR:
-                do_STR(instr, op);
+                do_STR(instr);
                 break;
             case OP_RET:
-                do_RET(instr, op);
+                do_RET(instr);
                 break;
             case OP_TRAP:
-                do_TRAP(instr, op, running);
+                do_TRAP(instr, running);
                 break;
             case OP_RES:
             case OP_RTI:
